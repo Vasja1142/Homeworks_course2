@@ -2,36 +2,63 @@
 
 
 
+using System;
 using System.Reflection;
 
 internal class Program
 {
     public static List<List<int>> binTable;
     public static List<List<int>> resultTable;
-    public static char[] nameValues = { 'a', 'b', 'c', 'd', 'e' };
+    public static Random random = new Random();
+    public static char[] nameVal = { 'a', 'b', 'c', 'd', 'e' };
     private static void Main(string[] args)
     {
-        int n = ImputPositiveNumber("Введите количество аргументов (до 5): ");
-        while (n > 5) n = ImputPositiveNumber("Введите количество аргументов (до 5): ");
-        Console.WriteLine("Вводите значения коньюнкций 1 или 0. Любые положительные числа больше 1 воспринимаются программой за 1.");
-        binTable = new List<List<int>>((int)Math.Pow(2, n));
-        resultTable = new List<List<int>>();
-        List<int> boolNums = new List<int>(n);
-        RecFunc(boolNums, n);
-<<<<<<< HEAD
-<<<<<<< HEAD
-        PrintTable(binTable);
-=======
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-=======
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-        PrintSKNF(n);
-        PrintSDNF(n);
-        PrintMDNF(n);
 
+        ConsoleOperations();
     }
 
 
+    public static void ConsoleOperations()
+    {
+        int n = ImputPositiveNumber("Введите количество аргументов (до 5): ");
+        while (n > 5) n = ImputPositiveNumber("Введите количество аргументов (до 5): ");
+       
+        binTable = new List<List<int>>((int)Math.Pow(2, n));
+        resultTable = new List<List<int>>();
+        List<int> boolNums = new List<int>(n);
+        
+        
+        int numAction;
+        bool isRunConsole = true;
+
+        while (isRunConsole)
+        {
+            Console.WriteLine("1. Ручной ввод\n" +
+                "2. Рандомное заполнение\n" +
+                "0. Выход");
+            numAction = ImputInt();
+            switch (numAction)
+            {
+                case 0:
+                    Console.WriteLine("Выход");
+                    isRunConsole = false;
+                    break;
+                case 1:
+                    Console.WriteLine("Вводите значения коньюнкций 1 или 0. Любые положительные числа больше 1 воспринимаются программой за 1.");
+                    CreatingATruthTable(boolNums, n);
+                    break;
+                    case 2:
+                    CreatingARandomTruthTable(boolNums, n);
+                    break;
+                default:
+                    Console.WriteLine("Введено неверное значение");
+                    break;
+            }
+            PrintSKNF(n);
+            PrintSDNF(n);
+            PrintMDNF(n);
+        }
+    }
 
 
     public static void PrintSDNF(int len)
@@ -49,7 +76,7 @@ internal class Program
                 {
 
                     if (list[i] == 0) Console.Write('!');
-                    Console.Write(nameValues[i]);
+                    Console.Write(nameVal[i]);
                 }
 
             }
@@ -58,7 +85,7 @@ internal class Program
     }
 
 
-    public static List<List<int>> MDNFFunction(List<List<int>> ternMDNF, int count)
+    public static List<List<int>> MDNFFunctions(List<List<int>> ternMDNF, int count)
     {
         if (count == 0 || ternMDNF.Count == 0)
         {
@@ -106,19 +133,9 @@ internal class Program
                     resultTable.Add(ternMDNF[i].ToList());
                 }
             }
-<<<<<<< HEAD
-<<<<<<< HEAD
-            PrintTable(resTernMDNF);
-            Console.WriteLine("~~~~~~~~~~~~~~~");
-=======
             resTernMDNF = DeletintIdenticalLines(resTernMDNF);
 
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-=======
-            resTernMDNF = DeletintIdenticalLines(resTernMDNF);
-
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-            return MDNFFunction(resTernMDNF, count - 1);
+            return MDNFFunctions(resTernMDNF, count - 1);
         }
     }
 
@@ -139,22 +156,9 @@ internal class Program
                 disTable.Add(list);
             }
         }
-        MDNFFunction(disTable, len - 1);
+        MDNFFunctions(disTable, len - 1);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        Console.WriteLine("---");
-
-        PrintTable(resultTable);
-        Console.WriteLine("----");
         List<List<int>> MDNF = Absorbing(resultTable);
-        PrintTable(MDNF);
-=======
-        List<List<int>> MDNF = Absorbing(resultTable);
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-=======
-        List<List<int>> MDNF = Absorbing(resultTable);
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
 
         bool flag = false;
         foreach (List<int> list in MDNF)
@@ -168,7 +172,7 @@ internal class Program
                     if (list[i] == -1) continue;
 
                     if (list[i] == 0) Console.Write('!');
-                    Console.Write(nameValues[i]);
+                    Console.Write(nameVal[i]);
                 }
 
             
@@ -176,41 +180,17 @@ internal class Program
         Console.WriteLine();
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public static List<List<int>> Absorbing(List<List<int>> mdnf)
-    {
-        bool isEmpty;
-        List<List<int>> resultLists = new List<List<int>>();
-        for (int i = 0; i < mdnf.Count-1; i++)
-=======
 
     public static List<List<int>> DeletintIdenticalLines(List<List<int>> list)
     {
         List<List<int>> resLists = new List<List<int>>();
 
         if (list.Count>0)
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-=======
-
-    public static List<List<int>> DeletintIdenticalLines(List<List<int>> list)
-    {
-        List<List<int>> resLists = new List<List<int>>();
-
-        if (list.Count>0)
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
         {
             bool isEmpty;
             
             for (int i = 0; i < list.Count - 1; i++)
             {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                resultLists.Add(mdnf[i]);
-                continue;
-=======
-=======
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
                 isEmpty = true;
                 for (int j = i + 1; j < list.Count; j++)
                 {
@@ -229,40 +209,20 @@ internal class Program
                     resLists.Add(list[i]);
                     continue;
                 }
-<<<<<<< HEAD
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-=======
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
             }
             resLists.Add(list[list.Count - 1]);
         }
 
         return resLists;
     }
-<<<<<<< HEAD
-
-    public static List<List<int>> Absorbing(List<List<int>> mdnf)
-    {
-        List<List<int>> resLists = DeletintIdenticalLines(mdnf);
-
-<<<<<<< HEAD
-        if(mdnf.Count != 0)  resultLists.Add(mdnf[mdnf.Count-1]);
-        Console.WriteLine("````````````");
-        PrintTable(resultLists);
-        Console.WriteLine("```````````");
-=======
-        if(mdnf.Count != 0)  resLists.Add(mdnf[mdnf.Count-1]);
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
-=======
 
     public static List<List<int>> Absorbing(List<List<int>> mdnf)
     {
         List<List<int>> resLists = DeletintIdenticalLines(mdnf);
 
         if(mdnf.Count != 0)  resLists.Add(mdnf[mdnf.Count-1]);
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
         int counter;
-        foreach (var ints in resultLists)
+        foreach (var ints in resLists)
         {
             counter = -1;
             foreach (int i in ints)
@@ -271,38 +231,26 @@ internal class Program
             }
             ints[ints.Count - 1] = counter;
         }
-        List<List<int>> sortedList = new List<List<int>>(resultLists.Count);   
+        List<List<int>> sortedList = new List<List<int>>(resLists.Count);   
         for (int i = 5; i > 0; i--)
         {
-            for (int j = 0; j < resultLists.Count; j++)
+            for (int j = 0; j < resLists.Count; j++)
             {
-                if (resultLists[j][resultLists[0].Count-1] == i) sortedList.Add(resultLists[j]);
+                if (resLists[j][resLists[0].Count-1] == i) sortedList.Add(resLists[j]);
             }
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        resultLists = sortedList;
-        Console.WriteLine("````````````");
-        PrintTable(resultLists);
-        Console.WriteLine("```````````");
-
-        for (int i = 0; i < resultLists.Count; i++)
-=======
-=======
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
         resLists = sortedList;
         bool isEmpty;
         for (int i = 0; i < resLists.Count; i++)
->>>>>>> 2c71d6543b8c714b443b7635f7ccd0ab65733ac6
         {
             isEmpty = false;
-            for (int k = 0; k < resultLists[0].Count-1; k++)
+            for (int k = 0; k < resLists[0].Count-1; k++)
             {
                 isEmpty = false;
-                for (int j = 0; j < resultLists.Count; j++)
+                for (int j = 0; j < resLists.Count; j++)
                 {
-                    if (resultLists[i][k] == resultLists[j][k] && j!=i)
+                    if (resLists[i][k] == resLists[j][k] && j!=i)
                     {
                         isEmpty = true;
                         break;
@@ -312,12 +260,12 @@ internal class Program
             }
             if (isEmpty)
             {
-                resultLists.RemoveAt(i--);
+                resLists.RemoveAt(i--);
             }
         }
 
 
-        return resultLists; 
+        return resLists; 
     }
 
     public static void PrintSKNF(int len)
@@ -331,7 +279,7 @@ internal class Program
                 for (int i = 0; i < len; i++)
                 {
                     if (list[i] == 1) Console.Write('!');
-                    Console.Write(nameValues[i]);
+                    Console.Write(nameVal[i]);
                     if (i < len - 1) Console.Write("∨");
                 }
                 Console.Write(")");
@@ -340,7 +288,7 @@ internal class Program
         Console.WriteLine();
     }
 
-    public static void RecFunc(List<int> boolNums, int len)
+    public static void CreatingATruthTable(List<int> boolNums, int len)
     {
         if (len == 0)
         {
@@ -360,7 +308,33 @@ internal class Program
             for (int i = 0; i < 2; i++)
             {
                 boolNums.Add(i);
-                RecFunc(boolNums, len - 1);
+                CreatingATruthTable(boolNums, len - 1);
+                boolNums.RemoveAt(boolNums.Count - 1);
+            }
+        }
+    }
+
+    public static void CreatingARandomTruthTable(List<int> boolNums, int len)
+    {
+        if (len == 0)
+        {
+            for (int i = 0; i < boolNums.Count; i++)
+            {
+                Console.Write(boolNums[i]);
+            }
+
+            List<int> listBool = new List<int>(boolNums);
+            int randomNum = random.Next(2);
+            Console.WriteLine(" " + randomNum);
+            listBool.Add(randomNum);
+            binTable.Add(listBool);
+        }
+        else
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                boolNums.Add(i);
+                CreatingARandomTruthTable(boolNums, len - 1);
                 boolNums.RemoveAt(boolNums.Count - 1);
             }
         }
@@ -388,6 +362,5 @@ internal class Program
         }
         return time;
     }
-
 
 }
